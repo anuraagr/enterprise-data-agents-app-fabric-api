@@ -1,0 +1,8 @@
+asyncio
+aiohttp
+azure-ai-projects
+azure-identity
+databricks-sdk
+dotenv
+streamlit
+Authlib

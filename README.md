@@ -27,7 +27,7 @@ within the file for "TODO".
 
 <!---------------------[  Description  ]------------------<recommended> section below------------------>
 
-# enterprise-data-agents
+# Enterprise Data Agents
 
 <!-- 
 INSTRUCTIONS:
@@ -46,7 +46,13 @@ How to Evaluate & Examples:
   - https://aka.ms/StartRight/README-Template/Instructions#description
 -->
 
-Reference application for providing a natural language query (NLQ) interface against Microsoft Fabric Data Agents and Databricks Genie.
+This is a sample application built with Azure AI Foundry that showcases the following concepts:
+
+* Integration with the Azure AI Foundry project using the [Azure AI Projects client library](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/sdk-overview?tabs=sync&pivots=programming-language-python) for Python in order to create and consume agent services from running code.
+
+* Incorporating the popular application framework [Streamlit](https://docs.streamlit.io/) to create an interactive conversational experneice against multiple systems (tools).
+
+* Utilization of the built-in Fabric Knowledge tool and equivenant integration with Databricks Genie using custom user functions
 
 -----------------------------------------------------------------
 <!-----------------------[  License  ]----------------------<optional> section below--------------------->
@@ -71,85 +77,71 @@ How to Evaluate & Examples:
 
 <!------====-- CONTENT GOES ABOVE ------->
 
+## Service Prerequites
 
+This demonstration assumes the following is configured in your Azure environment:
 
-<!-----------------------[  Getting Started  ]--------------<recommended> section below------------------>
-## Getting Started
+* An Azure Databricks workspace with an instance of Genie that is connected to sample data.
+* A Fabric enviroment with a Data Agent configured to to consume data from a Lakehouse (recommended) hosting sample data. An F64 SKU or higher is required for this.
+* An Azure AI Foundry project. The project must have a Microsoft Fabric connected resource.
 
-<!-- 
-INSTRUCTIONS:
-  - Write instructions such that any new user can get the project up & running on their machine.
-  - This section has subsections described further down of "Prerequisites", "Installing", and "Deployment". 
+To integrate with Databricks Genie, you will need to [create a Databricks Access Token](https://learn.microsoft.com/en-us/azure/databricks/dev-tools/auth/pat#azure-databricks-personal-access-tokens-for-workspace-users) with following permissions to the Unity Catalog Schema and Tables that will be accessed: `USE CATALOG`, `USE SCHEMA`, and `SELECT`. The token value will be used in the project `.env` file (see below).
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#getting-started
--->
+## Local Environment Setup
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
-*Description of how to install and use the code or content goes here*
-<!------====-- CONTENT GOES ABOVE ------->
+Ensure you have the following installed in your local environment:
 
+* [Python Language Support for VS Code](https://marketplace.visualstudio.com/items/?itemName=ms-python.python) extension installed and running.
 
-<!-----------------------[ Prerequisites  ]-----------------<optional> section below--------------------->
-### Prerequisites
+* The most recent version of [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and working.
 
-<!--------------------------------------------------------
-INSTRUCTIONS:
-- Describe what things a new user needs to install in order to install and use the repository. 
+This repo assumes an environment running Ubuntu 24 LTS running on Windows 11 via Windows Subsystem for Linux with Python 3.12 or higher installed:
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#prerequisites
----------------------------------------------------------->
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-There are no prerequisites required to run this code or use this repository.
-<!------====-- CONTENT GOES ABOVE ------->
-
-
-<!-----------------------[  Installing  ]-------------------<optional> section below------------------>
-### Installing
-
-<!--
-INSTRUCTIONS:
-- A step by step series of examples that tell you how to get a development environment and your code running. 
-- Best practice is to include examples that can be copy and pasted directly from the README into a terminal.
-
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#installing
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-This repository does not hold installable content.
-<!------====-- CONTENT GOES ABOVE ------->
-
-
-<!-----------------------[  Tests  ]------------------------<optional> section below--------------------->
-<!-- 
-## Tests
- -->
-
-<!--
-INSTRUCTIONS:
-- Explain how to run the tests for this project. You may want to link here from Deployment (CI/CD) or Contributing sections.
-
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#tests
--->
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-<!--
-
-*Explain what these tests test and why* 
-
+```bash
+sudo apt install python
+sudo apt install python3-pip
+sudo apt install python-is-python3
+sudo apt install python3.12-venv
 ```
-Give an example
-``` 
 
--->
-<!------====-- CONTENT GOES ABOVE ------->
+Next, create a Python virtual environment at the root project folder:
 
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Next, use the `requirements.txt` file to install the Python packages:
+
+```bash
+pip install -r /src/requirements.txt
+```
+
+## App Configuration
+
+Create a `.env` file under the **foundry-sdk** directory and use the provided [env.example](/src/env.example) file to add the necessary environment variables. Be sure to update each value to match your environment.
+
+## Run and Debug
+
+Open a terminal within VS Code and sign into your Azure tenant via the `az login` command.
+
+> `az login --tenant "tenant-id"` is the most direct way to authenticate to a specific tenant.
+
+When prompted, be sure to select the subscription that is hosting your Azure Foundry instance.
+
+You will then be able to use the "Run and Debug" feature VS Code to execute the agent.
+
+## Run the Application
+
+The demo application is written in Streamlit, to run the demo in your terminal do the following steps:
+
+```powershell
+cd src
+streamlit run Home.py
+```
 
 <!-----------------------[  Deployment (CI/CD)  ]-----------<optional> section below--------------------->
-### Deployment (CI/CD)
+## Deployment (CI/CD)
 
 <!-- 
 INSTRUCTIONS:
