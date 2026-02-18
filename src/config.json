@@ -1,13 +1,13 @@
-{
-    "agent-namespace": "enterprise-data",
-    "agent-namespace-desc": "A namespace for the enterprise data agents configuration.",
+﻿{
+    "agent-namespace": "healthcare-data",
+    "agent-namespace-desc": "A namespace for the Synthea healthcare data agents configuration.",
     "agent-config": [
         {
-            "agent-name": "enterprise-data-agent",
+            "agent-name": "synthea-healthcare-agent",
             "agent-version": "0.1.0",
-            "agent-description": "A simple agent that can be used to test the Foundry SDK.",
-            "toolset": [ "genie_taxi_data", "fabric_sales_data" ],
-            "prompt": "You are an agent who forwards user queries to various tools to get answers. \r\n If the message is about taxi fare data, use the genie_fetch_data function.\r\n If the message is about sales data, use the second tool in the toolset. Do NOT use a function call. Just use the second tool.\r\n The data that is returned from genie_fetch_data is in json with the following format: \"\"columns\"\", \"\"data\"\", and \"\"query_description\"\".\r\n Struture this as markdown with the \"\"query_description\"\" at the top and the columns and data in a table."
+            "agent-description": "An agent that queries Synthea healthcare data through Microsoft Fabric.",
+            "toolset": [ "fabric_synthea_data" ],
+            "prompt": "You are a healthcare data analyst agent that queries Synthea patient data through Microsoft Fabric. Use the Fabric tool to answer questions about patient demographics, conditions, medications, encounters, and procedures. Format all data responses as markdown tables."
         }
     ]
 }

@@ -1,320 +1,314 @@
-<!--=========================README TEMPLATE INSTRUCTIONS=============================
-======================================================================================
+# Enterprise Data Agents - Healthcare Edition
 
-- THIS README TEMPLATE LARGELY CONSISTS OF COMMENTED OUT TEXT. THIS UNRENDERED TEXT IS MEANT TO BE LEFT IN AS A GUIDE 
-  THROUGHOUT THE REPOSITORY'S LIFE WHILE END USERS ONLY SEE THE RENDERED PAGE CONTENT. 
-- Any italicized text rendered in the initial template is intended to be replaced IMMEDIATELY upon repository creation.
+> **Note:** This repository is a fork of the original [mcaps-microsoft/enterprise-data-agents](https://github.com/mcaps-microsoft/enterprise-data-agents) repository with significant enhancements for healthcare data analysis using Microsoft Fabric Data Agents.
 
-- This template is default but not mandatory. It was designed to compensate for typical gaps in Microsoft READMEs 
-  that slow the pace of work. You may delete it if you have a fully populated README to replace it with.
+A sample application built with Azure AI Foundry and Microsoft Fabric that showcases enterprise-grade AI agents for querying healthcare data using natural language.
 
-- Most README sections below are commented out as they are not known early in a repository's life. Others are commented 
-  out as they do not apply to every repository. If a section will be appropriate later but not known now, consider 
-  leaving it in commented out and adding an issue as a reminder.
-- There are additional optional README sections in the external instruction link below. These include; "citation",  
-  "built with", "acknowledgments", "folder structure", etc.
-- You can easily find the places to add content that will be rendered to the end user by searching 
-within the file for "TODO".
+## 🌟 What's New in This Fork
 
+This fork extends the original enterprise-data-agents repository with:
 
+- **Healthcare Agent** - A specialized Streamlit-based conversational UI for querying Synthea healthcare data
+- **Microsoft Fabric Data Agent Integration** - Direct integration with Fabric Data Agents for natural language SQL
+- **Azure Container Apps Deployment** - One-click deployment script for Azure
+- **Comprehensive Stress Testing Suite** - 50+ test queries across 8 categories
+- **Enhanced Error Handling** - Retry logic, capacity detection, and user-friendly error messages
 
-- ADDITIONAL EXTERNAL TEMPLATE INSTRUCTIONS:
-  -  https://aka.ms/StartRight/README-Template/Instructions
+---
 
-======================================================================================
-====================================================================================-->
+## 📁 Project Structure
 
-
-<!---------------------[  Description  ]------------------<recommended> section below------------------>
-
-# Enterprise Data Agents
-
-<!-- 
-INSTRUCTIONS:
-- Write description paragraph(s) that can stand alone. Remember 1st paragraph may be consumed by aggregators to improve 
-  search experience.
-- You description should allow any reader to figure out:
-    1. What it does?
-    2. Why was it was created?
-    3. Who created?
-    4. What is it's maturity?
-    5. What is the larger context?
-- Write for a reasonable person with zero context regarding your product, org, and team. The person may be evaluating if 
-this is something they can use.
-
-How to Evaluate & Examples: 
-  - https://aka.ms/StartRight/README-Template/Instructions#description
--->
-
-This is a sample application built with Azure AI Foundry that showcases the following concepts:
-
-* Integration with the Azure AI Foundry project using the [Azure AI Projects client library](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/sdk-overview?tabs=sync&pivots=programming-language-python) for Python in order to create and consume agent services from running code.
-
-* Incorporating the popular application framework [Streamlit](https://docs.streamlit.io/) to create an interactive conversational experneice against multiple systems (tools).
-
-* Utilization of the built-in Fabric Knowledge tool and equivenant integration with Databricks Genie using custom user functions
-
------------------------------------------------------------------
-<!-----------------------[  License  ]----------------------<optional> section below--------------------->
-
-<!-- 
-## License 
---> 
-
-<!-- 
-INSTRUCTIONS:
-- Licensing is mostly irrelevant within the company for purely internal code. Use this section to prevent potential 
-  confusion around:
-  - Open source in internal code repository.
-  - Multiple licensed code in same repository. 
-  - Internal fork of public open source code.
-
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#license
--->
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-
-<!------====-- CONTENT GOES ABOVE ------->
-
-## Service Prerequites
-
-This demonstration assumes the following is configured in your Azure environment:
-
-* An Azure Databricks workspace with an instance of Genie that is connected to sample data.
-* A Fabric enviroment with a Data Agent configured to to consume data from a Lakehouse (recommended) hosting sample data. An F64 SKU or higher is required for this.
-* An Azure AI Foundry project. The project must have a Microsoft Fabric connected resource.
-
-To integrate with Databricks Genie, you will need to [create a Databricks Access Token](https://learn.microsoft.com/en-us/azure/databricks/dev-tools/auth/pat#azure-databricks-personal-access-tokens-for-workspace-users) with following permissions to the Unity Catalog Schema and Tables that will be accessed: `USE CATALOG`, `USE SCHEMA`, and `SELECT`. The token value will be used in the project `.env` file (see below).
-
-## Local Environment Setup
-
-Ensure you have the following installed in your local environment:
-
-* [Python Language Support for VS Code](https://marketplace.visualstudio.com/items/?itemName=ms-python.python) extension installed and running.
-
-* The most recent version of [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) is installed and working.
-
-This repo assumes an environment running Ubuntu 24 LTS running on Windows 11 via Windows Subsystem for Linux with Python 3.12 or higher installed:
-
-```bash
-sudo apt install python
-sudo apt install python3-pip
-sudo apt install python-is-python3
-sudo apt install python3.12-venv
+```
+enterprise-data-agents/
+├── src/                              # Main application source code
+│   ├── Home.py                       # Landing page with enterprise dashboard
+│   ├── pages/
+│   │   └── 01-Healthcare_Agent.py    # Healthcare chatbot interface
+│   ├── services/
+│   │   ├── agent_provider.py         # Azure AI Foundry agent management
+│   │   ├── tool_provider.py          # Fabric & Genie tool initialization
+│   │   └── genie_functions.py        # Databricks Genie integration
+│   └── requirements.txt              # Python dependencies
+├── tests/                            # Test suites
+│   ├── stress_test_healthcare_agent.py  # Comprehensive stress testing
+│   └── quick_test.py                 # Quick connectivity validation
+├── docs/
+│   └── STRESS_TEST_SUMMARY.md        # Test documentation
+├── deploy-azure.ps1                  # Azure Container Apps deployment
+├── Dockerfile                        # Container configuration
+└── README.md                         # This file
 ```
 
-Next, create a Python virtual environment at the root project folder:
+---
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
+## 🔧 Functions & Components Reference
 
-Next, use the `requirements.txt` file to install the Python packages:
+### Core Application (`src/`)
 
-```bash
-pip install -r /src/requirements.txt
-```
+#### `Home.py` - Enterprise Landing Page
+| Function/Component | Description |
+|-------------------|-------------|
+| Hero Section | Professional landing page with gradient styling |
+| Quick Stats | Display of data tables, patient counts, records, and security status |
+| Feature Cards | Showcases AI capabilities and integrations |
+| Navigation | Links to Healthcare Agent and other tools |
 
-## App Configuration
+#### `pages/01-Healthcare_Agent.py` - Healthcare Chatbot
+| Function | Description |
+|----------|-------------|
+| `init_session_state()` | Initialize Streamlit session with default values and welcome message |
+| `get_fabric_credential()` | Get Azure credential (ClientSecret → ManagedIdentity → AzureCLI chain) |
+| `get_fabric_token()` | Acquire OAuth token for Fabric API using MSAL or Azure Identity |
+| `check_fabric_connection_status()` | Quick connectivity check to Fabric Data Agent |
+| `call_fabric_agent(user_message, conversation_id, max_retries)` | Execute queries against Fabric Data Agent with retry logic |
+| `format_response_with_sql(response)` | Extract and format SQL code blocks from responses |
+| `process_uploaded_file(uploaded_file)` | Parse CSV/Excel files for context-aware queries |
+| `get_file_context()` | Build context string from uploaded file summaries |
+| `run_fabric_query(user_query, placeholder)` | Execute query with progress indication |
 
-Create a `.env` file under the **foundry-sdk** directory and use the provided [env.example](/src/env.example) file to add the necessary environment variables. Be sure to update each value to match your environment.
+**Fabric Data Agent API Flow:**
+1. Create assistant via `POST /assistants`
+2. Create thread via `POST /threads`
+3. Add user message via `POST /threads/{id}/messages`
+4. Create run via `POST /threads/{id}/runs`
+5. Poll for completion via `GET /threads/{id}/runs/{run_id}`
+6. Retrieve messages via `GET /threads/{id}/messages`
+7. Cleanup via `DELETE /threads/{id}`
 
-## Run and Debug
+---
 
-Open a terminal within VS Code and sign into your Azure tenant via the `az login` command.
+### Services (`src/services/`)
 
-> `az login --tenant "tenant-id"` is the most direct way to authenticate to a specific tenant.
+#### `agent_provider.py` - Azure AI Foundry Agent Management
+| Function | Description |
+|----------|-------------|
+| `get_project_client()` | Create AsyncAIProjectClient using DefaultAzureCredential |
+| `create_agent(project_client, agent_name, prompt, deployment_name)` | Create new AI agent with Fabric+Genie toolset |
+| `delete_agent_async(project_client, agent_id)` | Clean up agent resources |
 
-When prompted, be sure to select the subscription that is hosting your Azure Foundry instance.
+#### `tool_provider.py` - Tool Initialization
+| Function | Description |
+|----------|-------------|
+| `get_fabric_sales_agent_tool(project_client)` | Initialize FabricTool from connected resource |
+| `get_genie_sales_agent_tool(project_client)` | Initialize AsyncFunctionTool for Databricks Genie |
+| `initialize_toolset(project_client)` | Combine Fabric and Genie tools into AsyncToolSet |
 
-You will then be able to use the "Run and Debug" feature VS Code to execute the agent.
+#### `genie_functions.py` - Databricks Genie Integration
+| Function | Description |
+|----------|-------------|
+| `genie_fetch_data(question, thread_id)` | Query Databricks Genie with natural language, returns JSON with columns, data, and query description |
 
-## Run the Application
+---
 
-The demo application is written in Streamlit, to run the demo in your terminal do the following steps:
+### Testing Suite (`tests/`)
+
+#### `stress_test_healthcare_agent.py` - Comprehensive Stress Testing
+| Function | Description |
+|----------|-------------|
+| `get_fabric_token()` | Acquire authentication token via MSAL |
+| `call_fabric_agent(user_message, max_retries)` | Execute query with retry logic and error classification |
+| `run_stress_test(categories, delay_between_queries)` | Run full test suite across specified categories |
+| `quick_connectivity_test()` | Verify basic connectivity to Fabric Data Agent |
+
+**Test Categories:**
+| Category | Queries | Description |
+|----------|---------|-------------|
+| `schema_discovery` | 4 | Table and column introspection |
+| `patient_queries` | 5 | Patient demographics analysis |
+| `condition_queries` | 4 | Diagnosis and condition analysis |
+| `medication_queries` | 5 | Prescription cost analytics |
+| `encounter_queries` | 5 | Visit and encounter analysis |
+| `complex_joins` | 5 | Multi-table relationship queries |
+| `aggregate_analytics` | 5 | Summary statistics and trends |
+| `quick_questions` | 12 | UI quick action queries |
+
+#### `quick_test.py` - Quick Validation
+| Function | Description |
+|----------|-------------|
+| `get_token()` | Acquire token for testing |
+| `run_query(query, timeout_secs)` | Execute single query with timeout |
+
+---
+
+### Deployment (`deploy-azure.ps1`)
+
+Automated Azure Container Apps deployment script that:
+
+| Step | Action |
+|------|--------|
+| 1 | Create Resource Group (`rg-synthea-agent`) |
+| 2 | Create Azure Container Registry |
+| 3 | Build and push Docker image using ACR Tasks |
+| 4 | Create Container Apps Environment |
+| 5 | Get ACR credentials |
+| 6 | Deploy Container App with environment variables and secrets |
+| 7 | Get application URL |
+| 8 | Assign Cognitive Services OpenAI User role to Managed Identity |
+
+---
+
+## 🏥 Synthea Healthcare Data Schema
+
+The Healthcare Agent queries a Fabric Lakehouse containing synthetic patient data:
+
+| Table | Description | Key Columns |
+|-------|-------------|-------------|
+| `patients` | Patient demographics | Id, Gender, Race, BirthDate, DeathDate, Healthcare_Expenses |
+| `conditions` | Diagnoses | Patient, Code, Description, Start, Stop |
+| `medications` | Prescriptions | Patient, Description, Base_Cost, TotalCost, Dispenses |
+| `encounters` | Visits | Patient, EncounterClass, Total_Claim_Cost, Organization |
+| `procedures` | Medical procedures | Patient, Code, Description, Base_Cost |
+| `observations` | Vitals and labs | Patient, Description, Value, Units |
+| `allergies` | Patient allergies | Patient, Description, Type, Category |
+| `immunizations` | Vaccines | Patient, Description, Cost |
+| `careplans` | Care plans | Patient, Description, ReasonCode |
+| `organizations` | Healthcare facilities | Name, City, Revenue, Utilization |
+| `providers` | Clinicians | Name, Speciality, Encounters |
+| `payers` | Insurance | Name, Amount_Covered, Unique_Customers |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- Azure CLI installed and authenticated
+- Microsoft Fabric workspace with Data Agent configured (F64+ SKU)
+- Azure AI Foundry project with Fabric connected resource
+
+### Local Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mcaps-microsoft/enterprise-data-agents.git
+   cd enterprise-data-agents
+   ```
+
+2. **Create virtual environment:**
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate  # Windows
+   # or
+   source .venv/bin/activate  # Linux/Mac
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r src/requirements.txt
+   ```
+
+4. **Configure environment variables:**
+   ```bash
+   cp src/env.example src/.env
+   # Edit .env with your credentials
+   ```
+
+   Required variables:
+   ```env
+   PROJECT_CONNECTION_STRING="<AI Foundry connection string>"
+   FABRIC_CONNECTION_NAME="<Fabric connected resource name>"
+   FABRIC_CLIENT_ID="<App registration client ID>"
+   FABRIC_CLIENT_SECRET="<App registration client secret>"
+   FABRIC_TENANT_ID="<Azure tenant ID>"
+   FABRIC_WORKSPACE_ID="<Fabric workspace GUID>"
+   FABRIC_ARTIFACT_ID="<Data Agent artifact GUID>"
+   ```
+
+5. **Run locally:**
+   ```bash
+   cd src
+   streamlit run Home.py
+   ```
+
+### Deploy to Azure Container Apps
 
 ```powershell
-cd src
-streamlit run Home.py
+# Run the deployment script
+.\deploy-azure.ps1
 ```
 
-<!-----------------------[  Deployment (CI/CD)  ]-----------<optional> section below--------------------->
-## Deployment (CI/CD)
+This will deploy to: `https://synthea-healthcare-agent.<env>.eastus.azurecontainerapps.io`
 
-<!-- 
-INSTRUCTIONS:
-- Describe how to deploy if applicable. Deployment includes website deployment, packages, or artifacts.
-- Avoid potential new contributor frustrations by making it easy to know about all compliance and continuous integration 
-    that will be run before pull request approval.
-- NOTE: Setting up an Azure DevOps pipeline gets you all 1ES compliance and build tooling such as component governance. 
-  - More info: https://aka.ms/StartRight/README-Template/integrate-ado
+---
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#deployment-and-continuous-integration
--->
+## 🧪 Testing
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
-_At this time, the repository does not use continuous integration or produce a website, artifact, or anything deployed._
-<!------====-- CONTENT GOES ABOVE ------->
+### Quick Connectivity Test
+```bash
+python tests/stress_test_healthcare_agent.py --quick
+```
 
+### Run Specific Category
+```bash
+python tests/stress_test_healthcare_agent.py --category quick_questions
+```
 
-<!-----------------------[  Versioning and Changelog  ]-----<optional> section below--------------------->
+### Full Stress Test
+```bash
+python tests/stress_test_healthcare_agent.py --all --delay 3
+```
 
-<!-- ### Versioning and Changelog -->
+---
 
-<!-- 
-INSTRUCTIONS:
-- If there is any information on a changelog, history, versioning style, roadmap or any related content tied to the 
-  history and/or future of your project, this is a section for it.
+## 🔐 Authentication
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#versioning-and-changelog
--->
+The application supports multiple authentication methods:
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
-<!-- We use [SemVer](https://aka.ms/StartRight/README-Template/semver) for versioning. -->
-<!------====-- CONTENT GOES ABOVE ------->
+| Method | Use Case |
+|--------|----------|
+| **Client Secret** | Production deployments with App Registration |
+| **Managed Identity** | Azure Container Apps with system-assigned identity |
+| **Azure CLI** | Local development |
 
+Authentication priority: ClientSecretCredential → ManagedIdentityCredential → AzureCliCredential
 
------------------------------------------------
+---
 
-<!-----------------------[  Access  ]-----------------------<recommended> section below------------------>
-## Access
+## 📊 Sample Queries
 
-<!-- 
-INSTRUCTIONS:
-- Please use this section to reduce the all-too-common friction & pain of getting read access and role-based permissions 
-  to repos inside Microsoft. Please cover (a) Gaining a role with read, write, other permissions. (b) sharing a link to 
-  this repository such that people who are not members of the organization can access it.
-- If the repository is set to internalVisibility, you may also want to refer to the "Sharing a Link to this Repository" sub-section 
-of the [README-Template instructions](https://aka.ms/StartRight/README-Template/Instructions#sharing-a-link-to-this-repository) so new GitHub EMU users know to get 1ES-Enterprise-Visibility MyAccess group access and therefore will have read rights to any repo set to internalVisibility.
+Try these queries with the Healthcare Agent:
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#how-to-share-an-accessible-link-to-this-repository
--->
+| Query | Description |
+|-------|-------------|
+| "What tables are available?" | Schema discovery |
+| "Show top 10 conditions by patient count" | Condition analysis |
+| "What is the total medication cost by drug?" | Cost analytics |
+| "Analyze encounter types" | Visit breakdown |
+| "Which providers have the most patients?" | Provider statistics |
+| "Show healthcare spending by gender" | Demographic analysis |
 
+---
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
+## 🐛 Troubleshooting
 
-<!------====-- CONTENT GOES ABOVE ------->
+### Fabric Capacity Not Active
+The Fabric capacity may auto-pause. Resume via:
+1. Go to [Fabric Admin Portal](https://app.fabric.microsoft.com/admin-portal)
+2. Navigate to Capacity settings
+3. Find your capacity and click **Resume**
 
+### Authentication Errors
+- Ensure Azure CLI is logged in: `az login`
+- Verify `.env` file has correct credentials
+- Check App Registration has Fabric API permissions
 
-<!-----------------------[  Contributing  ]-----------------<recommended> section below------------------>
-## Contributing
+### Query Timeouts
+- Complex queries may take 60-120 seconds
+- The agent includes automatic retry with exponential backoff
 
-<!--
-INSTRUCTIONS: 
-- Establish expectations and processes for existing & new developers to contribute to the repository.
-  - Describe whether first step should be email, teams message, issue, or direct to pull request.
-  - Express whether fork or branch preferred.
-- CONTRIBUTING content Location:
-  - You can tell users how to contribute in the README directly or link to a separate CONTRIBUTING.md file.
-  - The README sections "Contacts" and "Reuse Expectations" can be seen as subsections to CONTRIBUTING.
-  
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#contributing
--->
+---
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
-_This repository prefers outside contributors start forks rather than branches. For pull requests more complicated 
-than typos, it is often best to submit an issue first._
+## 📄 License
 
-If you are a new potential collaborator who finds reaching out or contributing to another project awkward, you may find 
-it useful to read these [tips & tricks](https://aka.ms/StartRight/README-Template/innerSource/2021_02_TipsAndTricksForCollaboration) 
-on InnerSource Communication.
-<!------====-- CONTENT GOES ABOVE ------->
+This project is for demonstration purposes. See the original repository for licensing information.
 
+---
 
-<!-----------------------[  Contacts  ]---------------------<recommended> section below------------------>
-<!-- 
-#### Contacts  
--->
-<!--
-INSTRUCTIONS: 
-- To lower friction for new users and contributors, provide a preferred contact(s) and method (email, TEAMS, issue, etc.)
+## 🙏 Acknowledgments
 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#contacts
--->
+- Original repository: [mcaps-microsoft/enterprise-data-agents](https://github.com/mcaps-microsoft/enterprise-data-agents)
+- Synthea synthetic healthcare data: [synthetichealth/synthea](https://github.com/synthetichealth/synthea)
+- Microsoft Fabric Data Agent documentation
+- Azure AI Foundry SDK
 
-<!---- [TODO]  CONTENT GOES BELOW ------->
-
-<!------====-- CONTENT GOES ABOVE ------->
-
-
-<!-----------------------[  Support & Reuse Expectations  ]-----<recommended> section below-------------->
- 
-### Support & Reuse Expectations
-
- 
-<!-- 
-INSTRUCTIONS:
-- To avoid misalignments use this section to set expectations in regards to current and future state of:
-  - The level of support the owning team provides new users/contributors and 
-  - The owning team's expectations in terms of incoming InnerSource requests and contributions.
-
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#support-and-reuse-expectations
--->
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-
-_The creators of this repository **DO NOT EXPECT REUSE**._
-
-If you do use it, please let us know via an email or 
-leave a note in an issue, so we can best understand the value of this repository.
-<!------====-- CONTENT GOES ABOVE ------->
-
-
-<!-----------------------[  Limitations  ]----------------------<optional> section below----------------->
-
-<!-- 
-### Limitations 
---> 
-
-<!-- 
-INSTRUCTIONS:
-- Use this section to make readers aware of any complications or limitations that they need to be made aware of.
-  - State:
-    - Export restrictions
-    - If telemetry is collected
-    - Dependencies with non-typical license requirements or limitations that need to not be missed. 
-    - trademark limitations
- 
-How to Evaluate & Examples:
-  - https://aka.ms/StartRight/README-Template/Instructions#limitations
--->
-
-<!---- [TODO]  CONTENT GOES BELOW ------->
-
-<!------====-- CONTENT GOES ABOVE ------->
-
---------------------------------------------
-
-
-<!-----------------------[  Links to Platform Policies  ]-------<recommended> section below-------------->
-## How to Accomplish Common User Actions
-<!-- 
-INSTRUCTIONS: 
-- This section links to information useful to any user of this repository new to internal GitHub policies & workflows.
--->
-
- If you have trouble doing something related to this repository, please keep in mind that the following actions require 
- using [GitHub inside Microsoft (GiM) tooling](https://aka.ms/gim/docs) and not the normal GitHub visible user interface!
-- [Switching between EMU GitHub and normal GitHub without logging out and back in constantly](https://aka.ms/StartRight/README-Template/maintainingMultipleAccount)
-- [Creating a repository](https://aka.ms/StartRight)
-- [Changing repository visibility](https://aka.ms/StartRight/README-Template/policies/jit) 
-- [Gaining repository permissions, access, and roles](https://aka.ms/StartRight/README-TEmplates/gim/policies/access)
-- [Enabling easy access to your low sensitivity and widely applicable repository by setting it to Internal Visibility and having any FTE who wants to see it join the 1ES Enterprise Visibility MyAccess Group](https://aka.ms/StartRight/README-Template/gim/innersource-access)
-- [Migrating repositories](https://aka.ms/StartRight/README-Template/troubleshoot/migration)
-- [Setting branch protection](https://aka.ms/StartRight/README-Template/gim/policies/branch-protection)
-- [Setting up GitHubActions](https://aka.ms/StartRight/README-Template/policies/actions)
-- [and other actions](https://aka.ms/StartRight/README-Template/gim/policies)
-
-This README started as a template provided as part of the 
-[StartRight](https://aka.ms/gim/docs/startright) tool that is used to create new repositories safely. Feedback on the
-[README template](https://aka.ms/StartRight/README-Template) used in this repository is requested as an issue. 
-
-<!-- version: 2023-04-07 [Do not delete this line, it is used for analytics that drive template improvements] -->

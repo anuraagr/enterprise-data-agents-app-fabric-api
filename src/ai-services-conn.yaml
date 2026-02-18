@@ -1,0 +1,5 @@
+﻿name: synthea-ai-connection
+type: azure_ai_services
+endpoint: https://eastus.api.cognitive.microsoft.com/
+api_key: 6ff5175e35be49ecb53312122a7da0d0
+ai_services_resource_id: /subscriptions/520c58eb-9501-4b21-adc0-2a5958398429/resourceGroups/rg-ai-project/providers/Microsoft.CognitiveServices/accounts/synthea-ai-services

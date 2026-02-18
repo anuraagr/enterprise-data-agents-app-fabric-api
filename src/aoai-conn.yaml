@@ -1,0 +1,5 @@
+﻿$schema: https://azuremlschemas.azureedge.net/latest/azureOpenAIConnection.schema.json
+name: synthea-aoai
+type: azure_open_ai
+azure_endpoint: https://eastus.api.cognitive.microsoft.com/
+api_key: 2cdf3861699049fa89d5c98b6cf333db
