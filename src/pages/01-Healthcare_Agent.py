@@ -13,14 +13,14 @@ import pandas as pd
 
 load_dotenv()
 
-# Fabric Data Agent Configuration
-FABRIC_WORKSPACE_ID = os.getenv("FABRIC_WORKSPACE_ID", "4dabd120-bae2-445d-8f6e-5dcd242ebe79")
-FABRIC_ARTIFACT_ID = os.getenv("FABRIC_ARTIFACT_ID", "6ea26d3a-d8dc-49be-8510-63e96bb044db")
+# Fabric Data Agent Configuration — set these in your .env file (see env.example)
+FABRIC_WORKSPACE_ID = os.getenv("FABRIC_WORKSPACE_ID", "")
+FABRIC_ARTIFACT_ID = os.getenv("FABRIC_ARTIFACT_ID", "")
 
-# App Registration Configuration (Fabric API POC)
-FABRIC_CLIENT_ID = os.getenv("FABRIC_CLIENT_ID", "052db582-8e48-4fda-8b74-c388517bf5a6")
-FABRIC_CLIENT_SECRET = os.getenv("FABRIC_CLIENT_SECRET", "")  # Set this in environment!
-FABRIC_TENANT_ID = os.getenv("FABRIC_TENANT_ID", "2c6fe00a-9400-47ba-9aff-58ef68cf07f7")
+# App Registration Configuration
+FABRIC_CLIENT_ID = os.getenv("FABRIC_CLIENT_ID", "")
+FABRIC_CLIENT_SECRET = os.getenv("FABRIC_CLIENT_SECRET", "")
+FABRIC_TENANT_ID = os.getenv("FABRIC_TENANT_ID", "")
 
 # Fabric Data Agent API base URL - uses the aiassistant/openai endpoint with api-version
 FABRIC_API_BASE = f"https://api.fabric.microsoft.com/v1/workspaces/{FABRIC_WORKSPACE_ID}/dataagents/{FABRIC_ARTIFACT_ID}/aiassistant/openai"
@@ -1052,13 +1052,13 @@ with st.sidebar:
     st.markdown("---")
     
     if st.button("🔄 New Conversation", use_container_width=True):
-        st.session_state["thread"] = st.session_state["client"].beta.threads.create()
         st.session_state["messages"] = [{
             "role": "assistant", 
             "content": "👋 New conversation started! How can I help you with healthcare data today?",
             "timestamp": datetime.now().isoformat()
         }]
         st.session_state["query_history"] = []
+        st.session_state.pop("conversation_id", None)
         st.rerun()
     
     st.markdown("---")

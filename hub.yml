@@ -1,5 +1,0 @@
-﻿$schema: https://azuremlschemas.azureedge.net/latest/workspace.schema.json
-name: synthea-hub
-location: eastus
-kind: hub
-public_network_access: enabled

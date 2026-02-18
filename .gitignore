@@ -1,3 +1,11 @@
+# Azure / Fabric connection files (may contain API keys)
+*-conn.yaml
+*.connection.yaml
+
+# Output dumps
+*.json
+!src/config.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
